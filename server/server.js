@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import mongoose from "mongoose";
 dotenv.config();
 
@@ -13,7 +14,8 @@ import { UserModel } from "./models/UserSchema.js";
 
 const app = express();
 
-app.use(express.json()); // parses json data\
+app.use(express.json()); // parses json data
+app.use(cors());
 
 /** Database connection */
 main().catch((err) => console.log(err));
@@ -46,16 +48,20 @@ app.use(
   })
 );
 
-/** Middleware to check if session and req.user is created */
-app.use((req, res, next) => {
-  console.log(req.user);
-  console.log(req.session);
-  next();
-});
+/** initialize passport to all requests and allow persistent sessions */
+app.use(passport.initialize());
+app.use(passport.session());
 
 passport.use(UserModel.createStrategy()); //Using the strategy created with passport local mongoose in the UserSchema
 passport.serializeUser(UserModel.serializeUser());
 passport.deserializeUser(UserModel.deserializeUser());
+
+/** Middleware to check if session and req.user is created */
+app.use((req, res, next) => {
+  console.log(req.session);
+  console.log(req.user);
+  next();
+});
 
 /** Routes */
 app.use("/api/auth/", authRoute);

@@ -32,5 +32,5 @@ const UserSchema = new Schema({
   },
 });
 
-UserSchema.plugin(passportLocalMongoose, { maxAttempts: 3 });
+UserSchema.plugin(passportLocalMongoose);
 export const UserModel = mongoose.model("UserModel", UserSchema);

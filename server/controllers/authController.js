@@ -30,3 +30,15 @@ export const register = async (req, res) => {
     .status(StatusCodes.OK)
     .json({ message: "New user is registered", newUser });
 };
+
+/** LOGIN */
+export const login = async (req, res) => {
+  if (!req.body) {
+    throw new ExpressError("No data received", StatusCodes.BAD_REQUEST);
+  }
+  const foundUser = await UserModel.findOne({ username: req.body.username });
+  if (!foundUser) {
+    throw new ExpressError("User does not exist", StatusCodes.NOT_FOUND);
+  }
+  res.status(StatusCodes.OK).json({ message: "User found", foundUser });
+};
