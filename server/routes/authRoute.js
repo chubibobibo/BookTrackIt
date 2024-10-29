@@ -1,10 +1,39 @@
 import express from "express";
-import { register } from "../controllers/authController.js";
+import { login, register } from "../controllers/authController.js";
 
-import { registerValidation } from "../middleware/inputValidation.js";
+import passport from "passport";
+
+import {
+  loginValidation,
+  registerValidation,
+} from "../middleware/inputValidation.js";
 
 const router = express.Router();
 
 router.post("/register", registerValidation, register);
+
+/** @user authenticated user object (successful authentication) */
+/** @info error messages encountered */
+router.post("/login", loginValidation, (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return next(err);
+    }
+    /** auth fails */
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: info.message || "Username or password incorrect",
+      });
+    }
+    /** auth succeeds */
+    req.login(user, (err) => {
+      if (err) {
+        return next(err);
+      }
+      return login(req, res);
+    });
+  })(req, res, next); //invokes the passport.authenticate immediately;
+});
 
 export default router;

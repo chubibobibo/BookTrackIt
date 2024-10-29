@@ -21,6 +21,7 @@ const withValidationErrors = (validateValues) => {
   ];
 };
 
+/** VALIDATE REGISTER INPUT */
 export const registerValidation = withValidationErrors([
   body("username")
     .notEmpty()
@@ -62,4 +63,18 @@ export const registerValidation = withValidationErrors([
         );
       }
     }),
+]);
+
+/** VALIDATE LOGIN INPUT */
+export const loginValidation = withValidationErrors([
+  body("username")
+    .notEmpty()
+    .withMessage("username cannot be empty")
+    .isLength({ min: 3 })
+    .withMessage("Username should be more than 3 characters"),
+  body("password")
+    .notEmpty()
+    .withMessage("Password cannot be empty")
+    .isLength({ min: 8 })
+    .withMessage("Password should be more than 8 characters"),
 ]);
