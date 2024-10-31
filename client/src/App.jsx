@@ -10,6 +10,7 @@ import {
 } from "./utils";
 
 import { action as loginAction } from "./pages/authPages/LoginUserPage";
+import { action as registerAction } from "./pages/authPages/RegisterUserPage";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,11 @@ const router = createBrowserRouter([
         path: "/",
         element: <LoginUserPage />,
         action: loginAction,
+      },
+      {
+        path: "/register",
+        element: <RegisterUserPage />,
+        action: registerAction,
       },
     ],
   },
