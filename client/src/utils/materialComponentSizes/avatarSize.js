@@ -4,3 +4,7 @@ export const avatarSize = {
   small: "size-10",
   large: "size-32",
 };
+
+export const avatarTextSize = {
+  large: "text-4xl",
+};

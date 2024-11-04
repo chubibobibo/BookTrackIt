@@ -11,6 +11,8 @@ import {
 
 import { action as loginAction } from "./pages/authPages/LoginUserPage";
 import { action as registerAction } from "./pages/authPages/RegisterUserPage";
+import { loader as getLoggedUserLoader } from "./pages/dashboardPages/DashboardPage";
+
 import DashboardPage from "./pages/dashboardPages/DashboardPage";
 
 const router = createBrowserRouter([
@@ -33,6 +35,7 @@ const router = createBrowserRouter([
       {
         path: "/dashboard",
         element: <DashboardPage />,
+        loader: getLoggedUserLoader,
       },
     ],
   },
