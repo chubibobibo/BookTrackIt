@@ -1,7 +1,14 @@
 import express from "express";
-import { login, register } from "../controllers/authController.js";
+import {
+  login,
+  register,
+  // logout,
+  getLoggedUser,
+  updateUser,
+} from "../controllers/authController.js";
 
 import passport from "passport";
+import { logout } from "../middleware/authMiddleware.js";
 
 import {
   loginValidation,
@@ -9,6 +16,13 @@ import {
 } from "../middleware/inputValidation.js";
 
 const router = express.Router();
+
+/** GET LOGGED USER */
+router.get("/getLoggedUser", getLoggedUser);
+
+/** LOGGING OUT */
+/** @logout middleware to logout */
+router.post("/logout", logout);
 
 router.post("/register", registerValidation, register);
 
@@ -35,5 +49,8 @@ router.post("/login", loginValidation, (req, res, next) => {
     });
   })(req, res, next); //invokes the passport.authenticate immediately;
 });
+
+/**UPDATE USER */
+router.patch("/updateProfile", updateUser);
 
 export default router;
