@@ -8,11 +8,12 @@ import {
 } from "../controllers/authController.js";
 
 import passport from "passport";
-import { logout } from "../middleware/authMiddleware.js";
+import { logout, isLoggedIn } from "../middleware/authMiddleware.js";
 
 import {
   loginValidation,
   registerValidation,
+  updateProfileValidation,
 } from "../middleware/inputValidation.js";
 
 const router = express.Router();
@@ -51,6 +52,6 @@ router.post("/login", loginValidation, (req, res, next) => {
 });
 
 /**UPDATE USER */
-router.patch("/updateProfile", updateUser);
+router.patch("/updateProfile", updateProfileValidation, isLoggedIn, updateUser);
 
 export default router;
