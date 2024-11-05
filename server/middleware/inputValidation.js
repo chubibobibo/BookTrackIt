@@ -78,3 +78,47 @@ export const loginValidation = withValidationErrors([
     .isLength({ min: 8 })
     .withMessage("Password should be more than 8 characters"),
 ]);
+
+/** VALIDATE UPDATE PROFILE */
+export const updateProfileValidation = withValidationErrors([
+  body("username")
+    .notEmpty()
+    .withMessage("Username cannot be empty")
+    .isLength({ min: 3 })
+    .withMessage("Username should be more than 3 characters")
+    .custom(async (username) => {
+      const foundName = await UserModel.findOne({ username: username });
+      if (foundName) {
+        throw new ExpressError("username already used");
+      }
+    }),
+  body("lastName")
+    .notEmpty()
+    .withMessage("Last name cannot be empty")
+    .isLength({ min: 3 })
+    .withMessage("Last name should be more than 3 characters"),
+  body("firstName")
+    .notEmpty()
+    .withMessage("First name cannot be empty")
+    .isLength({ min: 3 })
+    .withMessage("First name should be more than 3 characters"),
+  body("password")
+    .notEmpty()
+    .withMessage("Password cannot be empty")
+    .isLength({ min: 8 })
+    .withMessage("Password should be more than 8 characters"),
+  body("email")
+    .notEmpty()
+    .withMessage("Email cannot be empty")
+    .isEmail()
+    .withMessage("Email should be valid")
+    .custom(async (email) => {
+      const foundEmail = await UserModel.findOne({ email: email });
+      if (foundEmail) {
+        throw new ExpressError(
+          "Email is already in use",
+          StatusCodes.BAD_REQUEST
+        );
+      }
+    }),
+]);

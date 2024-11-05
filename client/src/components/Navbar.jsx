@@ -3,7 +3,7 @@ import { useLoggedUserHook } from "../hooks/useLoggedUserHook";
 import { toCapitalize } from "../hooks/toCapitalize.js";
 
 import axios from "axios";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import React from "react";
@@ -21,7 +21,9 @@ function Navbar() {
 
   //** handling state to open and close modal */
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(!open);
+  const handleOpen = () => {
+    setOpen(!open);
+  };
 
   /** @userData contains data of user from the context @data */
   const data = useLoggedUserHook();
@@ -48,25 +50,27 @@ function Navbar() {
         userData={userData}
         className='mr-12'
       />
-      <Dialog open={open} handler={handleOpen}>
-        {/** modal  */}
+      {/** profile card modal  */}
+      <Dialog open={open} handler={handleOpen} size='sm'>
         <DialogHeader className='flex justify-center border-b-2 border-gray-300'>
           <Avatar size={"large"} textSize={"large"} userData={userData} />
         </DialogHeader>
         <DialogBody className='flex justify-center items-center flex-col'>
-          <Typography variant='h3'>
+          <Typography variant='h5' className='md:text-xl'>
             {toCapitalize(userData.username)}
           </Typography>
           <Typography className='text-base'>{userData.role}</Typography>
         </DialogBody>
-        <DialogFooter className='flex justify-center md:justify-end'>
-          <Button
-            variant='filled'
-            onClick={handleOpen}
-            className='mr-1 bg-customBlue'
-          >
-            <span>update profile</span>
-          </Button>
+        <DialogFooter className='flex justify-center md:justify-end gap-1'>
+          <Link to='/updateProfile'>
+            <Button
+              variant='filled'
+              onClick={handleOpen}
+              className='mr-1 bg-customBlue'
+            >
+              <span>update profile</span>
+            </Button>
+          </Link>
           <Button variant='gradient' color='red' onClick={handleLogout}>
             <span>LogOut</span>
           </Button>
