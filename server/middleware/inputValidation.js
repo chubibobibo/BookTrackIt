@@ -86,9 +86,9 @@ export const updateProfileValidation = withValidationErrors([
     .withMessage("Username cannot be empty")
     .isLength({ min: 3 })
     .withMessage("Username should be more than 3 characters")
-    .custom(async (username) => {
+    .custom(async (username, { req }) => {
       const foundName = await UserModel.findOne({ username: username });
-      if (foundName) {
+      if (foundName && username.toString() !== req.user.username.toString()) {
         throw new ExpressError("username already used");
       }
     }),
@@ -102,19 +102,17 @@ export const updateProfileValidation = withValidationErrors([
     .withMessage("First name cannot be empty")
     .isLength({ min: 3 })
     .withMessage("First name should be more than 3 characters"),
-  body("password")
-    .notEmpty()
-    .withMessage("Password cannot be empty")
-    .isLength({ min: 8 })
-    .withMessage("Password should be more than 8 characters"),
+  // body("password")
+  //   .isLength({ min: 8 })
+  //   .withMessage("Password should be more than 8 characters"),
   body("email")
     .notEmpty()
     .withMessage("Email cannot be empty")
     .isEmail()
     .withMessage("Email should be valid")
-    .custom(async (email) => {
+    .custom(async (email, { req }) => {
       const foundEmail = await UserModel.findOne({ email: email });
-      if (foundEmail) {
+      if (foundEmail && email.toString() !== req.user.email.toString()) {
         throw new ExpressError(
           "Email is already in use",
           StatusCodes.BAD_REQUEST

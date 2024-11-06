@@ -10,6 +10,8 @@ import {
 import passport from "passport";
 import { logout, isLoggedIn } from "../middleware/authMiddleware.js";
 
+import { limiter } from "../utils/rateLimiter.js";
+
 import {
   loginValidation,
   registerValidation,
@@ -29,7 +31,7 @@ router.post("/register", registerValidation, register);
 
 /** @user authenticated user object (successful authentication) */
 /** @info error messages encountered */
-router.post("/login", loginValidation, (req, res, next) => {
+router.post("/login", loginValidation, limiter, (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       return next(err);
