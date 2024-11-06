@@ -16,38 +16,40 @@ import {
 import { action as loginAction } from "./pages/authPages/LoginUserPage";
 import { action as registerAction } from "./pages/authPages/RegisterUserPage";
 import { action as updateProfileAction } from "./pages/authPages/UpdateProfile";
-import { loader as getLoggedUserLoader } from "./pages/HomeLayout";
+import { loader as getLoggedUserLoader } from "./pages/dashboardPages/DashboardPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomeLayout />,
     errorElement: <ErrorPage />,
-    loader: getLoggedUserLoader,
     children: [
       {
-        index: true,
         path: "/",
+        index: true,
         element: <LoginUserPage />,
         action: loginAction,
       },
       {
-        path: "/register",
+        path: "register",
         element: <RegisterUserPage />,
         action: registerAction,
       },
       {
-        path: "/updateProfile",
-        element: (
-          <ProtectRoutes>
-            <UpdateProfile />
-          </ProtectRoutes>
-        ),
-        action: updateProfileAction,
-      },
-      {
-        path: "/dashboard",
+        path: "dashboard",
         element: <DashboardPage />,
+        loader: getLoggedUserLoader,
+        children: [
+          {
+            path: "updateProfile",
+            element: (
+              <ProtectRoutes>
+                <UpdateProfile />
+              </ProtectRoutes>
+            ),
+            action: updateProfileAction,
+          },
+        ],
       },
     ],
   },

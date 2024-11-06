@@ -31,11 +31,15 @@ export const action = async ({ request }) => {
     return redirect("/dashboard");
   } catch (err) {
     console.log(err);
-    toast.error(
-      Array.isArray(err?.response?.data?.message)
-        ? err?.response?.data?.message[0]
-        : err?.response?.data?.message
-    );
+    if (err?.response?.data?.message) {
+      toast.error(
+        Array.isArray(err?.response?.data?.message)
+          ? err?.response?.data?.message[0]
+          : err?.response?.data?.message
+      );
+    } else {
+      toast.error(err?.response?.data);
+    }
     return err;
   }
 };
