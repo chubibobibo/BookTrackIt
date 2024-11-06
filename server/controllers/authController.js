@@ -2,7 +2,6 @@ import "express-async-errors";
 import { ExpressError } from "../ExpressError/ExpressError.js";
 import { StatusCodes } from "http-status-codes";
 import { UserModel } from "../models/UserSchema.js";
-import passport from "passport";
 
 /** REGISTER USER */
 /** destructured req.body to obtain password separately and use it in @setPassword */
@@ -66,8 +65,10 @@ export const updateUser = async (req, res) => {
     }
   );
   /** setting a new password */
-  await foundUser.setPassword(password);
-  await foundUser.save();
+  if (password) {
+    await foundUser.setPassword(password);
+    await foundUser.save();
+  }
 
   if (!updatedUser) {
     throw new ExpressError("Cannot update user", StatusCodes.BAD_REQUEST);
@@ -80,14 +81,15 @@ export const updateUser = async (req, res) => {
 /** GET LOGGED USER */
 export const getLoggedUser = async (req, res) => {
   if (!req.user) {
-    // res
-    //   .status(StatusCodes.NOT_FOUND)
-    //   .json({ message: "User is not logged in" });
-    throw new ExpressError("User not logged in", StatusCodes.NOT_FOUND);
+    res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ message: "User is not logged in" });
+    // throw new ExpressError("User not logged in", StatusCodes.NOT_FOUND);
+  } else {
+    const foundUser = await UserModel.findById(req.user._id);
+    if (!foundUser) {
+      throw new ExpressError("Cannot find user", StatusCodes.NOT_FOUND);
+    }
+    res.status(StatusCodes.OK).json({ message: "Found user", foundUser });
   }
-  const foundUser = await UserModel.findById(req.user._id);
-  if (!foundUser) {
-    throw new ExpressError("Cannot find user", StatusCodes.NOT_FOUND);
-  }
-  res.status(StatusCodes.OK).json({ message: "Found user", foundUser });
 };

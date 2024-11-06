@@ -25,7 +25,7 @@ function RegisterForm({
   /** @userData data from context in HomepageLayout  */
   const contextData = useLoggedUserHook();
   const userData = contextData?.data?.foundUser;
-  console.log(userData);
+  // console.log(userData);
 
   return (
     <ThemeProvider value={theme}>
@@ -43,26 +43,26 @@ function RegisterForm({
               label='username'
               size='lg'
               name='username'
-              defaultValue={userData && userData.username}
+              defaultValue={userData ? userData?.username : ""}
             />
             <Input
               label='First name'
               size='lg'
               name='firstName'
-              defaultValue={userData && userData.firstName}
+              defaultValue={userData ? userData?.firstName : ""}
             />
 
             <Input
               label='Last name'
               size='lg'
               name='lastName'
-              defaultValue={userData && userData.lastName}
+              defaultValue={userData ? userData?.lastName : ""}
             />
             <Input
               label='Email'
               size='lg'
               name='email'
-              defaultValue={userData && userData.email}
+              defaultValue={userData ? userData?.email : ""}
             />
             {/** Second password */}
             <Input

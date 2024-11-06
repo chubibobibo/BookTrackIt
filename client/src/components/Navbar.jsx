@@ -62,7 +62,7 @@ function Navbar() {
           <Typography className='text-base'>{userData.role}</Typography>
         </DialogBody>
         <DialogFooter className='flex justify-center md:justify-end gap-1'>
-          <Link to='/updateProfile'>
+          <Link to='/dashboard/updateProfile'>
             <Button
               variant='filled'
               onClick={handleOpen}
