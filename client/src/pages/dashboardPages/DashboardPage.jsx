@@ -1,12 +1,16 @@
 import Navbar from "../../components/Navbar";
+import Chips from "../../components/Chips.jsx";
+
 import ProtectRoutes from "../../utils/ProtectRoutes";
 import { Outlet } from "react-router-dom";
+import { useState } from "react";
 
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useLoaderData } from "react-router-dom";
 
 import { loggedUserContext } from "../../context/context.js";
+import { Typography } from "@material-tailwind/react";
 
 /** loader function to obtain logged user */
 export const loader = async () => {
@@ -22,10 +26,48 @@ export const loader = async () => {
 
 function DashboardPage() {
   const userData = useLoaderData();
+  /** @active state that will manage the color of the button */
+  const [active, setActive] = useState(null);
+
+  /** @handleActive function to change the state active to apply bg color */
+  /** @id tracks the element */
+  const handleActive = (id) => {
+    setActive(id);
+  };
+
   return (
     <loggedUserContext.Provider value={userData}>
       <ProtectRoutes>
         <Navbar />
+        <Typography variant='h3' className='font-customBody ml-2'>
+          Library
+        </Typography>
+        <section className='h-8 flex items-center gap-4 justify-around px-2 md:w-[50rem] md:justify-self-center md:gap-20'>
+          <Chips
+            title={"All books"}
+            idprop={1}
+            handleActive={handleActive}
+            active={active}
+          />
+          <Chips
+            title={"Borrowed"}
+            idprop={2}
+            handleActive={handleActive}
+            active={active}
+          />
+          <Chips
+            title={"return soon"}
+            idprop={3}
+            handleActive={handleActive}
+            active={active}
+          />
+          <Chips
+            title={"returned"}
+            idprop={4}
+            handleActive={handleActive}
+            active={active}
+          />
+        </section>
         <Outlet />
       </ProtectRoutes>
     </loggedUserContext.Provider>

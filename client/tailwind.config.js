@@ -8,6 +8,10 @@ export default withMT({
       colors: {
         customBlue: "#58a0f3",
       },
+      fontFamily: {
+        customBody: ["cabin", "sans-serif"],
+        customSpecial: ["doto", "sans-serif"],
+      },
     },
   },
   plugins: [],
