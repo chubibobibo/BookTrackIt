@@ -1,6 +1,8 @@
 import Avatar from "./Avatar";
 import { useLoggedUserHook } from "../hooks/useLoggedUserHook";
 import { toCapitalize } from "../hooks/toCapitalize.js";
+import { Input } from "@material-tailwind/react";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
@@ -43,7 +45,12 @@ function Navbar() {
   };
 
   return (
-    <section className='h-[3rem] bg-customBlue flex px-2 items-center gap-1 shadow-lg justify-end lg:h-[4rem]'>
+    <section className='h-[4rem] bg-customBlue flex px-2 items-center gap-1 shadow-lg justify-end lg:h-[4rem]'>
+      <Input
+        label='Search a book'
+        icon={<FaMagnifyingGlass color='white' />}
+        color='white'
+      />
       <Avatar
         handleOpen={handleOpen}
         size={"small"}
