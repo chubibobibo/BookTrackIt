@@ -42,3 +42,54 @@ export const login = async (req, res) => {
   }
   res.status(StatusCodes.OK).json({ message: "User found", foundUser });
 };
+
+/** UPDATE USER */
+export const updateUser = async (req, res) => {
+  if (!req.user) {
+    throw new ExpressError("User is not logged in", StatusCodes.BAD_REQUEST);
+  }
+  const { username, lastName, firstName, email, password } = req.body;
+
+  const foundUser = await UserModel.findById(req.user._id);
+
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    req.user,
+    {
+      username: username,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+    },
+    {
+      new: true,
+    }
+  );
+  /** setting a new password */
+  if (password) {
+    await foundUser.setPassword(password);
+    await foundUser.save();
+  }
+
+  if (!updatedUser) {
+    throw new ExpressError("Cannot update user", StatusCodes.BAD_REQUEST);
+  }
+  res
+    .status(StatusCodes.OK)
+    .json({ message: "User profile updated", updatedUser });
+};
+
+/** GET LOGGED USER */
+export const getLoggedUser = async (req, res) => {
+  if (!req.user) {
+    res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ message: "User is not logged in" });
+    // throw new ExpressError("User not logged in", StatusCodes.NOT_FOUND);
+  } else {
+    const foundUser = await UserModel.findById(req.user._id);
+    if (!foundUser) {
+      throw new ExpressError("Cannot find user", StatusCodes.NOT_FOUND);
+    }
+    res.status(StatusCodes.OK).json({ message: "Found user", foundUser });
+  }
+};

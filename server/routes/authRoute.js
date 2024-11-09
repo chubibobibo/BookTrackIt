@@ -1,20 +1,37 @@
 import express from "express";
-import { login, register } from "../controllers/authController.js";
+import {
+  login,
+  register,
+  // logout,
+  getLoggedUser,
+  updateUser,
+} from "../controllers/authController.js";
 
 import passport from "passport";
+import { logout, isLoggedIn } from "../middleware/authMiddleware.js";
+
+import { limiter } from "../utils/rateLimiter.js";
 
 import {
   loginValidation,
   registerValidation,
+  updateProfileValidation,
 } from "../middleware/inputValidation.js";
 
 const router = express.Router();
+
+/** GET LOGGED USER */
+router.get("/getLoggedUser", getLoggedUser);
+
+/** LOGGING OUT */
+/** @logout middleware to logout */
+router.post("/logout", logout);
 
 router.post("/register", registerValidation, register);
 
 /** @user authenticated user object (successful authentication) */
 /** @info error messages encountered */
-router.post("/login", loginValidation, (req, res, next) => {
+router.post("/login", loginValidation, limiter, (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) {
       return next(err);
@@ -35,5 +52,8 @@ router.post("/login", loginValidation, (req, res, next) => {
     });
   })(req, res, next); //invokes the passport.authenticate immediately;
 });
+
+/**UPDATE USER */
+router.patch("/updateProfile", updateProfileValidation, isLoggedIn, updateUser);
 
 export default router;
