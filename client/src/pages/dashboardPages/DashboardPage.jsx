@@ -1,6 +1,8 @@
 import Navbar from "../../components/Navbar";
 import Chips from "../../components/Chips.jsx";
+import BookModal from "../../components/BookModal.jsx";
 
+import { Button } from "@material-tailwind/react";
 import ProtectRoutes from "../../utils/ProtectRoutes";
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
@@ -39,9 +41,15 @@ function DashboardPage() {
     <loggedUserContext.Provider value={userData}>
       <ProtectRoutes>
         <Navbar />
-        <Typography variant='h3' className='font-customBody ml-2'>
-          Library
-        </Typography>
+        <section className='flex items-center'>
+          <Typography variant='h3' className='font-customBody ml-2 my-4'>
+            Library
+          </Typography>
+          {/* <Button className='ml-auto mr-2 h-10 bg-indigo-400'>
+            Add a book
+          </Button> */}
+          <BookModal />
+        </section>
         <section className='h-8 flex items-center gap-4 justify-around px-2 md:w-[50rem] md:justify-self-center md:gap-20'>
           <Chips
             title={"All books"}

@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 dotenv.config();
 
 import authRoute from "./routes/authRoute.js";
+import bookRoute from "./routes/bookRoutes.js";
 
 /** IMPORTS FOR SESSION AND PASSPORT */
 import MongoStore from "connect-mongo";
@@ -65,6 +66,7 @@ app.use((req, res, next) => {
 
 /** Routes */
 app.use("/api/auth/", authRoute);
+app.use("/api/book", bookRoute);
 
 /** middleware for not found errors and express errors */
 app.use("*", (req, res) => {
