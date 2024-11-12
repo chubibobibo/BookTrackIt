@@ -1,5 +1,5 @@
 export const status = {
-  returned: "returned",
-  borrowed: "borrowed",
-  missed: "missed",
+  returned: "already returned",
+  borrowed: "currently borrowed",
+  missed: "did not return",
 };

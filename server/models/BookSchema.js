@@ -40,7 +40,15 @@ const BookSchema = new Schema(
     status: {
       type: String,
       enum: Object.values(status),
-      required: true,
+      // required: true,
+    },
+
+    photoUrl: {
+      type: String,
+    },
+
+    photoId: {
+      type: String,
     },
   },
   { timestamps: true }
