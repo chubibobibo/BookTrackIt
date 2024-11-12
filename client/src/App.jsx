@@ -16,6 +16,7 @@ import {
 import { action as loginAction } from "./pages/authPages/LoginUserPage";
 import { action as registerAction } from "./pages/authPages/RegisterUserPage";
 import { action as updateProfileAction } from "./pages/authPages/UpdateProfile";
+// import { action as addBookAction } from "./pages/dashboardPages/DashboardPage";
 import { loader as getLoggedUserLoader } from "./pages/dashboardPages/DashboardPage";
 
 const router = createBrowserRouter([
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: <DashboardPage />,
         loader: getLoggedUserLoader,
+        // action: addBookAction,
         children: [
           {
             path: "updateProfile",
