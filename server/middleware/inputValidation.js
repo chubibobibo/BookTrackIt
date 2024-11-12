@@ -120,3 +120,19 @@ export const updateProfileValidation = withValidationErrors([
       }
     }),
 ]);
+/** VALIDATE ADDING OF BOOKS */
+export const newBookValidation = withValidationErrors([
+  body("bookTitle").notEmpty().withMessage("Book title cannot be empty"),
+  body("bookAuthor").notEmpty().withMessage("Author cannot be empty"),
+  body("borrowedFrom").notEmpty().withMessage("Borrowed from cannot be empty"),
+  body("dateBorrowed")
+    .notEmpty()
+    .withMessage("Date Borrowed cannot be empty")
+    .isDate()
+    .withMessage("Must be a valid date"),
+  body("dateToReturn")
+    .notEmpty()
+    .withMessage("Date to Return cannot be empty")
+    .isDate()
+    .withMessage("Must be a valid date"),
+]);

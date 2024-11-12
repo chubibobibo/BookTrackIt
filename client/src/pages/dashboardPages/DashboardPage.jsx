@@ -4,7 +4,7 @@ import BookModal from "../../components/BookModal.jsx";
 
 import { Button } from "@material-tailwind/react";
 import ProtectRoutes from "../../utils/ProtectRoutes";
-import { Outlet } from "react-router-dom";
+import { Outlet, Form, redirect } from "react-router-dom";
 import { useState } from "react";
 
 import { toast } from "react-toastify";
@@ -45,9 +45,6 @@ function DashboardPage() {
           <Typography variant='h3' className='font-customBody ml-2 my-4'>
             Library
           </Typography>
-          {/* <Button className='ml-auto mr-2 h-10 bg-indigo-400'>
-            Add a book
-          </Button> */}
           <BookModal />
         </section>
         <section className='h-8 flex items-center gap-4 justify-around px-2 md:w-[50rem] md:justify-self-center md:gap-20'>
