@@ -32,3 +32,15 @@ export const addBook = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ message: "New book created", newBook });
 };
+
+/** GET CURRENTLY BORROWED BOOKS */
+export const getBorrowedBooks = async (req, res) => {
+  const borrowedBooks = await BookModel.find({
+    status: "currently borrowed",
+  });
+
+  if (!borrowedBooks) {
+    res.status(StatusCodes.OK).json({ message: "No books found" });
+  }
+  res.status(StatusCodes.OK).json({ message: "Books found", borrowedBooks });
+};
