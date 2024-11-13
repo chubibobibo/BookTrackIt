@@ -12,13 +12,15 @@ import { useState } from "react";
 import { ThemeProvider } from "@material-tailwind/react";
 import { theme } from "../utils/materialcomponentTheme/buttonTheme.js";
 
-import { Form, redirect } from "react-router-dom";
+import { Form, redirect, useNavigate } from "react-router-dom";
 
 import NewBookForm from "./NewBookForm.jsx";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 function BookModal() {
+  const navigate = useNavigate();
+
   const [bookData, setBookData] = useState({
     bookTitle: "",
     bookAuthor: "",
@@ -49,7 +51,7 @@ function BookModal() {
         dateToReturn: "",
         photoUrl: "",
       });
-      redirect("/");
+      navigate("/dashboard/borrowedBooks");
     } catch (err) {
       console.log(err);
       toast.error(
