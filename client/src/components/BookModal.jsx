@@ -92,7 +92,7 @@ function BookModal() {
               variant='text'
               color='red'
               onClick={handleOpen}
-              className='mr-1'
+              className='mr-1 w-28'
               type='button'
             >
               <span>Cancel</span>
@@ -102,6 +102,7 @@ function BookModal() {
               color='indigo'
               onClick={handleOpen}
               type='submit'
+              className='w-32'
             >
               <span>Add book</span>
             </Button>
