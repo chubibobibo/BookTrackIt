@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 
 function LazyComponentLoad({ children }) {
   const [isVisible, setIsVisible] = useState(false);
-  console.log(isVisible);
+  //   console.log(isVisible);
   const ref = useRef();
   useEffect(() => {
     const observer = new IntersectionObserver(

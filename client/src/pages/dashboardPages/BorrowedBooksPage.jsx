@@ -7,6 +7,7 @@ import BookCard from "../../components/BookCard";
 import LazyComponentLoad from "../../hooks/LazyComponentLoad";
 
 import { lazy } from "react";
+import { Typography } from "@material-tailwind/react";
 
 const LazyBookCard = lazy(() => import("../../components/BookCard"));
 
@@ -14,7 +15,7 @@ const LazyBookCard = lazy(() => import("../../components/BookCard"));
 export const loader = async () => {
   try {
     const borrowedBooks = await axios.get("/api/book/borrowedBooks");
-    console.log(borrowedBooks);
+    // console.log(borrowedBooks);
     return borrowedBooks;
   } catch (err) {
     console.log(err);
@@ -27,21 +28,21 @@ function BorrowedBooksPage() {
   const data = useLoaderData();
   const bookData = data?.data?.borrowedBooks;
   return (
-    <section className='flex flex-col gap-3'>
-      {bookData?.map((books) => {
-        console.log(books);
-        return (
-          <div key={books._id}>
-            <LazyComponentLoad>
-              <BookCard
-                bookTitle={books?.bookTitle}
-                keyProp={books?._id}
-                booksImg={books?.photoUrl}
-              />
-            </LazyComponentLoad>
-          </div>
-        );
-      })}
+    <section className='flex flex-col gap-3 md:w-9/12 md:grid md:grid-cols-3 md:justify md:m:0'>
+      {!bookData ? (
+        <Typography>No Books yet 📖</Typography>
+      ) : (
+        bookData?.map((books, idx) => {
+          // console.log(books);
+          return (
+            <div key={books._id}>
+              <LazyComponentLoad>
+                <BookCard bookData={books} idx={idx} />
+              </LazyComponentLoad>
+            </div>
+          );
+        })
+      )}
     </section>
   );
 }

@@ -85,7 +85,7 @@ function DashboardPage() {
               active={active}
             />
           </section>
-          <section className='w-11/12 h-fit mt-2 flex justify-self-center'>
+          <section className='w-11/12 h-fit mt-4 flex justify-self-center md:justify-center'>
             <Outlet />
           </section>
         </ProtectRoutes>

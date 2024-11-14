@@ -46,11 +46,14 @@ function Navbar() {
 
   return (
     <section className='h-[4rem] bg-customBlue flex px-2 items-center gap-1 shadow-lg justify-end lg:h-[4rem]'>
-      <Input
-        label='Search a book'
-        icon={<FaMagnifyingGlass color='white' />}
-        color='white'
-      />
+      <section className='w-full md:flex md:w-2/12 md:ml-auto'>
+        <Input
+          label='Search a book'
+          icon={<FaMagnifyingGlass color='white' />}
+          color='white'
+          type='search'
+        />
+      </section>
       <Avatar
         handleOpen={handleOpen}
         size={"small"}
