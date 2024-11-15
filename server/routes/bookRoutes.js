@@ -1,13 +1,26 @@
 import express from "express";
-import { addBook } from "../controllers/bookControllers.js";
+import {
+  addBook,
+  getAllBooks,
+  updateStatus,
+} from "../controllers/bookControllers.js";
 import { newBookValidation } from "../middleware/inputValidation.js";
 import { getBorrowedBooks } from "../controllers/bookControllers.js";
 
 import upload from "../middleware/multerMiddleware.js";
+import { isLoggedIn } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/borrowedBooks", getBorrowedBooks);
-router.post("/newBook", upload.single("photoUrl"), newBookValidation, addBook);
+router.get("/allBooks", isLoggedIn, getAllBooks);
+router.get("/borrowedBooks", isLoggedIn, getBorrowedBooks);
+router.post(
+  "/newBook",
+  upload.single("photoUrl"),
+  isLoggedIn,
+  newBookValidation,
+  addBook
+);
+router.patch("/updateStatus/:id", isLoggedIn, updateStatus);
 
 export default router;

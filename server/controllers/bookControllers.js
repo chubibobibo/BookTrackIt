@@ -33,6 +33,15 @@ export const addBook = async (req, res) => {
   res.status(StatusCodes.OK).json({ message: "New book created", newBook });
 };
 
+/** GET ALL BOOKS */
+export const getAllBooks = async (req, res) => {
+  const allBooks = await BookModel.find({});
+  if (!allBooks) {
+    res.status(StatusCodes.OK).json({ message: "No books found" });
+  }
+  res.status(StatusCodes.OK).json({ message: "Books found", allBooks });
+};
+
 /** GET CURRENTLY BORROWED BOOKS */
 export const getBorrowedBooks = async (req, res) => {
   const borrowedBooks = await BookModel.find({
@@ -43,4 +52,16 @@ export const getBorrowedBooks = async (req, res) => {
     res.status(StatusCodes.OK).json({ message: "No books found" });
   }
   res.status(StatusCodes.OK).json({ message: "Books found", borrowedBooks });
+};
+
+/** UPDATE BOOK STATUS */
+export const updateStatus = async (req, res) => {
+  const { id } = req.params;
+  const updatedStatus = await BookModel.findByIdAndUpdate(id, {
+    status: "returned",
+  });
+  if (!updatedStatus) {
+    throw new ExpressError("Cannot update status", StatusCodes.BAD_REQUEST);
+  }
+  res.status(StatusCodes.OK).json({ message: "Status updated" });
 };
