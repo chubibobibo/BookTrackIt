@@ -14,7 +14,7 @@ const LazyBookCard = lazy(() => import("../../components/BookCard"));
 /** loader function to obtain books with borrowed books status */
 export const loader = async () => {
   try {
-    const borrowedBooks = await axios.get("/api/book/borrowedBooks");
+    const borrowedBooks = await axios.get("/api/book/allBooks");
     // console.log(borrowedBooks);
     return borrowedBooks;
   } catch (err) {
@@ -26,7 +26,7 @@ export const loader = async () => {
 
 function BorrowedBooksPage() {
   const data = useLoaderData();
-  const bookData = data?.data?.borrowedBooks;
+  const bookData = data?.data?.allBooks;
   return (
     <section className='flex flex-col gap-3 md:w-9/12 md:grid md:grid-cols-3 md:justify md:m:0'>
       {!bookData ? (
