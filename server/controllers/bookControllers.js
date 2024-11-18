@@ -35,7 +35,27 @@ export const addBook = async (req, res) => {
 
 /** GET ALL BOOKS */
 export const getAllBooks = async (req, res) => {
-  const allBooks = await BookModel.find({});
+  /** @queryObj default search if search query doesn't exist */
+  const { search } = req.query;
+  console.log(`this is ${search}`);
+  const queryObj = {
+    owner: req.user._id,
+  };
+
+  /** only if a search query is sent in the url */
+  /** if search use, the query obj to search in the bookTitle or bookAuthor fields with options 'i' to ignore letter case */
+  if (search) {
+    queryObj.$or = [
+      {
+        bookTitle: { $regex: search, $options: "i" },
+      },
+      { bookAuthor: { $regex: search, $options: "i" } },
+    ];
+  }
+
+  const allBooks = await BookModel.find(queryObj).populate("owner").sort({
+    createdAt: -1,
+  });
   if (!allBooks) {
     res.status(StatusCodes.OK).json({ message: "No books found" });
   }
@@ -43,10 +63,12 @@ export const getAllBooks = async (req, res) => {
 };
 
 /** GET CURRENTLY BORROWED BOOKS */
+
 export const getBorrowedBooks = async (req, res) => {
   const borrowedBooks = await BookModel.find({
-    status: "currently borrowed",
-  });
+    /** sorting the newest entry */
+    status: "currently-borrowed",
+  }).sort({ createdAt: -1 });
 
   if (!borrowedBooks) {
     res.status(StatusCodes.OK).json({ message: "No books found" });
@@ -64,4 +86,16 @@ export const updateStatus = async (req, res) => {
     throw new ExpressError("Cannot update status", StatusCodes.BAD_REQUEST);
   }
   res.status(StatusCodes.OK).json({ message: "Status updated" });
+};
+
+/** GET RETURNED BOOKS */
+export const getReturnedBooks = async (req, res) => {
+  const borrowedBooks = await BookModel.find({
+    status: "returned",
+  }).sort({ createdAt: -1 });
+
+  if (!borrowedBooks) {
+    res.status(StatusCodes.OK).json({ message: "No books found" });
+  }
+  res.status(StatusCodes.OK).json({ message: "Books found", borrowedBooks });
 };

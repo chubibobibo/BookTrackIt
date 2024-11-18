@@ -19,6 +19,7 @@ const app = express();
 
 app.use(express.json()); // parses json data
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 
 /** Database connection */
 main().catch((err) => console.log(err));
