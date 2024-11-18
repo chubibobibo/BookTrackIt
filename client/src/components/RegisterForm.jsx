@@ -29,9 +29,9 @@ function RegisterForm({
 
   return (
     <ThemeProvider value={theme}>
-      <section className='flex justify-center items-center h-fit py-2 bg-customBlue md:grid grid-cols-2 md:bg-white'>
+      <section className='flex w-screen justify-center items-center h-fit py-2 bg-customBlue md:grid grid-cols-2 md:bg-white md:w-full'>
         {/* <div className='bg-customBlue w-10 h-10 border-4-customBlue'>hello</div> */}
-        <Card className='w-10/12 md:w-[70%] md:h-screen md:justify-center md:justify-self-center'>
+        <Card className='w-10/12 m-2 md:w-[70%] md:h-screen md:justify-center md:justify-self-center'>
           <CardHeader className='mb-4 grid h-28 place-items-center'>
             <Typography variant='h3' color='white'>
               {title}

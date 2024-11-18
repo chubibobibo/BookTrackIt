@@ -51,15 +51,17 @@ function RegisterUserPage() {
   };
 
   return (
-    <Form method='POST'>
-      <RegisterForm
-        isHidden1={isHidden1}
-        handleClickHidden1={handleClickHidden1}
-        isHidden2={isHidden2}
-        handleClickHidden2={handleClickHidden2}
-        title={"Register"}
-      />
-    </Form>
+    <section className='m-0'>
+      <Form method='POST'>
+        <RegisterForm
+          isHidden1={isHidden1}
+          handleClickHidden1={handleClickHidden1}
+          isHidden2={isHidden2}
+          handleClickHidden2={handleClickHidden2}
+          title={"Register"}
+        />
+      </Form>
+    </section>
   );
 }
 export default RegisterUserPage;
