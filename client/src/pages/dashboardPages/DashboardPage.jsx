@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 import { loggedUserContext } from "../../context/context.js";
+import { searchContext } from "../../context/context.js";
+
 import { Typography } from "@material-tailwind/react";
 
 /** loader function to obtain logged user */
@@ -28,10 +30,14 @@ export const loader = async () => {
 function DashboardPage() {
   const navigate = useNavigate();
 
-  /** event handlers */
-  const handleNavToBorrowed = () => {
-    console.log("hello");
-  };
+  // /** useEffect to fetch data with queries */
+  // const [bookData, setBookData] = useState({});
+
+  /** @inputSearchQuery state to handle data in input for the search query in the navbar*/
+  /** passed as context to BorrowedBooksPage component to use the input data as search params */
+  const [inputSearchQuery, setInputSearchQuery] = useState({
+    search: "",
+  });
 
   const userData = useLoaderData();
   /** @active state that will manage the color of the button */
@@ -44,11 +50,14 @@ function DashboardPage() {
     navigate("/dashboard/borrowedBooks");
   };
 
+  // /** @inputSearchQuery state to handle data in input for the search query in the navbar*/
+  // /** passed as context to BorrowedBooksPage component to use the input data as search params */
+  // const [inputSearchQuery, setInputSearchQuery] = useState({ search: "" });
   return (
     <main>
       <loggedUserContext.Provider value={userData}>
         <ProtectRoutes>
-          <Navbar />
+          <Navbar setInputSearchQuery={setInputSearchQuery} />
           <section className='flex items-center justify-center md:w-5/12 md:justify-self-center md:m-7'>
             <Typography
               variant='h3'
@@ -59,7 +68,7 @@ function DashboardPage() {
             <BookModal />
           </section>
           {/* CHIPS BUTTONS*/}
-          <section className='h-8 flex items-center gap-4 justify-around px-2 md:w-[50rem] md:justify-self-center md:gap-20'>
+          <section className='h-8 flex items-center gap-4 justify-around px-2 md:w-[40rem] md:justify-self-center md:gap-20'>
             <Chips
               title={"All books"}
               idprop={1}
@@ -85,9 +94,11 @@ function DashboardPage() {
               active={active}
             />
           </section>
-          <section className='w-11/12 h-fit mt-4 flex justify-self-center md:justify-center'>
-            <Outlet />
+          {/* <searchContext.Provider value={inputSearchQuery}> */}
+          <section className='w-full h-full mt-4 flex justify-center md:justify-center '>
+            <Outlet context={inputSearchQuery} />
           </section>
+          {/* </searchContext.Provider> */}
         </ProtectRoutes>
       </loggedUserContext.Provider>
     </main>

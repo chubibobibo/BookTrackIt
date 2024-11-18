@@ -44,8 +44,9 @@ export const inputTheme = {
       base: {
         container: {
           position: "relative",
-          width: "w-full",
-          minWidth: "min-w-[200px]",
+          width: "w-11/12 md:w-[20rem]",
+          minWidth: "min-w-[100px]",
+          marginLeft: "sm:ml-auto",
         },
         input: {
           peer: "peer",

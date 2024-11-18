@@ -4,8 +4,11 @@ import { toCapitalize } from "../hooks/toCapitalize.js";
 import { Input } from "@material-tailwind/react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
+import { ThemeProvider } from "@material-tailwind/react";
+import { inputTheme } from "../utils/materialcomponentTheme/inputTheme.js";
+
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, Form } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import React from "react";
@@ -18,13 +21,19 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-function Navbar() {
+function Navbar({ setInputSearchQuery }) {
   const navigate = useNavigate();
 
   //** handling state to open and close modal */
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
     setOpen(!open);
+  };
+
+  const handleChange = (e) => {
+    setInputSearchQuery((prev) => {
+      return { ...prev, search: e.target.value };
+    });
   };
 
   /** @userData contains data of user from the context @data */
@@ -45,20 +54,27 @@ function Navbar() {
   };
 
   return (
-    <section className='h-[4rem] bg-customBlue flex px-2 items-center gap-1 shadow-lg justify-end lg:h-[4rem]'>
-      <section className='w-full md:flex md:w-2/12 md:ml-auto'>
-        <Input
-          label='Search a book'
-          icon={<FaMagnifyingGlass color='white' />}
-          color='white'
-          type='search'
-        />
+    <section className='h-[4rem] bg-customBlue flex px-4 items-center gap-1 shadow-lg lg:h-[4rem]'>
+      <section className='flex w-full md:flex md:ml-auto gap-2'>
+        <ThemeProvider value={inputTheme}>
+          <Form action='/dashboard/borrowedBooks'>
+            <Input
+              label='Search a book'
+              icon={<FaMagnifyingGlass color='white' />}
+              color='white'
+              type='search'
+              variant='outlined'
+              name='search'
+              onChange={handleChange}
+            />
+          </Form>
+        </ThemeProvider>
       </section>
       <Avatar
         handleOpen={handleOpen}
         size={"small"}
         userData={userData}
-        className='mr-12'
+        // className='sm:ml-auto'
       />
       {/** profile card modal  */}
       <Dialog open={open} handler={handleOpen} size='sm'>

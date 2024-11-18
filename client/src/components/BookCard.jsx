@@ -32,9 +32,9 @@ function BookCard({ bookData, idx }) {
     /** @customCardColor util function accepts iterated idx to apply dynamic classNames */
     <section>
       <Card
-        className={`w-full max-w-[48rem] h-[21rem] flex-row rounded-none ${customCardColor(
+        className={`w-full max-w-screen-[48rem] h-[22rem] flex-row rounded-none ${customCardColor(
           idx
-        )} mb-4 md:h-[30rem]`}
+        )} md:h-[22rem]`}
       >
         <CardHeader
           shadow={false}
@@ -78,6 +78,14 @@ function BookCard({ bookData, idx }) {
             </Typography>
             <Typography className='capitalize text-sm'>
               {bookData.borrowedFrom}
+            </Typography>
+          </section>
+          <section className='mb-2'>
+            <Typography className='text-sm font-bold text-indigo-300 capitalize'>
+              Borrowed by:
+            </Typography>
+            <Typography className='capitalize text-sm'>
+              {bookData.owner.username}
             </Typography>
           </section>
           <section className='mb-2'>

@@ -14,6 +14,7 @@ const router = express.Router();
 
 router.get("/allBooks", isLoggedIn, getAllBooks);
 router.get("/borrowedBooks", isLoggedIn, getBorrowedBooks);
+// router.get("/returnedBooks", isLoggedIn, returnedBooks);
 router.post(
   "/newBook",
   upload.single("photoUrl"),

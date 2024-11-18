@@ -23,7 +23,7 @@ const BookSchema = new Schema(
     },
 
     owner: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "UserModel",
     },
 
