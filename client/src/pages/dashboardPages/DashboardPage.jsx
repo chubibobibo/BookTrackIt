@@ -43,16 +43,22 @@ function DashboardPage() {
   /** @active state that will manage the color of the button */
   const [active, setActive] = useState(null);
 
+  /** Created different clickHandlers that navigates to a url with specific queries */
   /** @handleActive function to change the state active to apply bg color */
   /** @id tracks the element */
+  const handleActiveReturned = (id) => {
+    setActive(id);
+    navigate("/dashboard/borrowedBooks?status=returned");
+  };
+  const handleActiveBorrowed = (id) => {
+    setActive(id);
+    navigate("/dashboard/borrowedBooks?status=currently%20borrowed");
+  };
   const handleActive = (id) => {
     setActive(id);
     navigate("/dashboard/borrowedBooks");
   };
 
-  // /** @inputSearchQuery state to handle data in input for the search query in the navbar*/
-  // /** passed as context to BorrowedBooksPage component to use the input data as search params */
-  // const [inputSearchQuery, setInputSearchQuery] = useState({ search: "" });
   return (
     <main>
       <loggedUserContext.Provider value={userData}>
@@ -78,7 +84,7 @@ function DashboardPage() {
             <Chips
               title={"Borrowed"}
               idprop={2}
-              handleActive={handleActive}
+              handleActive={handleActiveBorrowed}
               active={active}
             />
             <Chips
@@ -90,7 +96,7 @@ function DashboardPage() {
             <Chips
               title={"returned"}
               idprop={4}
-              handleActive={handleActive}
+              handleActive={handleActiveReturned}
               active={active}
             />
           </section>
