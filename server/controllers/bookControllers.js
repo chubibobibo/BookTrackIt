@@ -36,21 +36,27 @@ export const addBook = async (req, res) => {
 /** GET ALL BOOKS */
 export const getAllBooks = async (req, res) => {
   /** @queryObj default search if search query doesn't exist */
-  const { search } = req.query;
-  console.log(`this is ${search}`);
+  const { search, status } = req.query;
+
   const queryObj = {
     owner: req.user._id,
   };
 
   /** only if a search query is sent in the url */
-  /** if search use, the query obj to search in the bookTitle or bookAuthor fields with options 'i' to ignore letter case */
+  /** if search, use the query obj to search in the bookTitle or bookAuthor fields with options 'i' to ignore letter case */
   if (search) {
     queryObj.$or = [
       {
         bookTitle: { $regex: search, $options: "i" },
       },
       { bookAuthor: { $regex: search, $options: "i" } },
+      // { status: { $regex: search, $options: "i" } },
     ];
+  }
+
+  /** Check for the status query in the url. Create a new property in the queryObj and give ii the value of the status query value */
+  if (status) {
+    queryObj.status = status;
   }
 
   const allBooks = await BookModel.find(queryObj).populate("owner").sort({

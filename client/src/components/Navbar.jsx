@@ -70,12 +70,7 @@ function Navbar({ setInputSearchQuery }) {
           </Form>
         </ThemeProvider>
       </section>
-      <Avatar
-        handleOpen={handleOpen}
-        size={"small"}
-        userData={userData}
-        // className='sm:ml-auto'
-      />
+      <Avatar handleOpen={handleOpen} size={"small"} userData={userData} />
       {/** profile card modal  */}
       <Dialog open={open} handler={handleOpen} size='sm'>
         <DialogHeader className='flex justify-center border-b-2 border-gray-300'>

@@ -41,16 +41,17 @@ function BookCard({ bookData, idx }) {
           floated={false}
           className={`m-0 w-2/5 shrink-0 rounded-r-none ${customCardColor(
             idx
-          )} m-2`}
+          )} m-2 sm:flex sm:flex-col sm:items-center`}
         >
           <img
             src={bookData.photoUrl}
             alt='card-image'
-            className='h-[15rem] w-[24rem] object-contain'
+            className='h-[15rem] w-[24rem] object-contain sm:mb-2'
             loading='lazy'
           />
           <Button
             color='red'
+            className='sm:w-32'
             onClick={() => {
               handleUpdateClick(bookData._id);
             }}

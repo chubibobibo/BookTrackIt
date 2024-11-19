@@ -15,10 +15,15 @@ import { useOutletContext } from "react-router-dom";
 /** loader function to obtain books with borrowed books status */
 export const loader = async ({ request }) => {
   try {
+    /** new URL creates a new url object using request.url */
+    /** @searchParams gives access to the query paramaters in the url (request.url)*/
+    /** @entries() returns a key value pair for each of the query parameters (searchParams) */
+    /** @params a url with  */
     const params = Object.fromEntries([
+      //converts the new URL into an object
       ...new URL(request.url).searchParams.entries(),
     ]);
-    // console.log(params);
+
     const borrowedBooks = await axios.get("/api/book/allBooks", { params });
     // console.log(request);
     return borrowedBooks;
@@ -30,35 +35,8 @@ export const loader = async ({ request }) => {
 };
 
 function BorrowedBooksPage() {
-  // const contextData = useOutletContext();
-  // // console.log(data1);
-  /** @searchContextData data from the input form in the Nav component */
-  // const searchContextData = useSearchContext();
-
   const data = useLoaderData();
   const allBooksData = data?.data?.allBooks;
-
-  /** useEffect to fetch data with queries */
-  // const [bookData, setBookData] = useState({});
-  // useEffect(() => {
-  //   const fetchBookData = async (request) => {
-  //     console.log(request);
-  //     try {
-  //       const data = await axios.get("/api/book/allBooks");
-  //       console.log(data);
-  //       // setBookData((prev) => {
-  //       //   return { ...prev, data };
-  //       // });
-  //     } catch (err) {
-  //       console.log(err);
-  //       toast.error(err?.response?.data?.message);
-  //     }
-  //   };
-  //   fetchBookData();
-  // }, [contextData]); //dependency on context, rerender when context from search input form changes
-
-  // console.log(bookData);
-  // const allBooksData = bookData.data?.data?.allBooks;
 
   return (
     <section className='flex flex-col gap-3 2xl:grid 2xl:grid-cols-3 2xl:justify-center 2xl:px-6 md:m:0'>
