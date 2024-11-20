@@ -17,6 +17,8 @@ function BookCard({ bookData, idx }) {
   const rdate = new Date(bookData.dateToReturn);
   const returnDate = rdate.toDateString();
 
+  // console.log(bookData);
+
   /** @update instantiates the customHook */
   /** @handleUpdateClick event handler that implements the custom hook to update the status*/
   const update = useUpdateStatus();
@@ -44,7 +46,11 @@ function BookCard({ bookData, idx }) {
           )} m-2 sm:flex sm:flex-col sm:items-center`}
         >
           <img
-            src={bookData.photoUrl}
+            src={
+              bookData?.photoUrl === "null"
+                ? "/bookCover.png"
+                : bookData.photoUrl
+            }
             alt='card-image'
             className='h-[15rem] w-[24rem] object-contain sm:mb-2'
             loading='lazy'
@@ -61,7 +67,7 @@ function BookCard({ bookData, idx }) {
         </CardHeader>
         <CardBody className='p-0 pt-3 w-full pr-2 ml-3'>
           <section className='flex flex-col items-center mb-2 border-b-2 border-gray-300'>
-            <Typography className='uppercase text-base font-bold text-indigo-400'>
+            <Typography className='uppercase text-sm font-bold text-gray-700'>
               {bookData.bookTitle}
             </Typography>
           </section>

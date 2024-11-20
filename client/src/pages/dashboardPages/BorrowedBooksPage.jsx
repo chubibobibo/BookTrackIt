@@ -2,22 +2,18 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useLoaderData, useOutlet } from "react-router-dom";
 
-import { useSearchContext } from "../../hooks/useSearchContext.js";
-
 import BookCard from "../../components/BookCard";
 
 import LazyComponentLoad from "../../hooks/LazyComponentLoad";
 
 import { Typography } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
 
 /** loader function to obtain books with borrowed books status */
 export const loader = async ({ request }) => {
   try {
     /** new URL creates a new url object using request.url */
     /** @searchParams gives access to the query paramaters in the url (request.url)*/
-    /** @entries() returns a key value pair for each of the query parameters (searchParams) */
+    /** @entries returns a key value pair for each of the query parameters (searchParams) */
     /** @params a url with  */
     const params = Object.fromEntries([
       //converts the new URL into an object
@@ -25,7 +21,6 @@ export const loader = async ({ request }) => {
     ]);
 
     const borrowedBooks = await axios.get("/api/book/allBooks", { params });
-    // console.log(request);
     return borrowedBooks;
   } catch (err) {
     console.log(err);
@@ -45,7 +40,7 @@ function BorrowedBooksPage() {
       ) : (
         allBooksData?.map((books, idx) => {
           return (
-            <div key={books._id}>
+            <div key={books._id} className='h-[21rem]'>
               <LazyComponentLoad>
                 <BookCard bookData={books} idx={idx} />
               </LazyComponentLoad>
