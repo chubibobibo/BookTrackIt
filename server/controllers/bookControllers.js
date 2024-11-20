@@ -2,6 +2,8 @@ import "express-async-errors";
 import { ExpressError } from "../ExpressError/ExpressError.js";
 import { StatusCodes } from "http-status-codes";
 import { BookModel } from "../models/BookSchema.js";
+import cron from "node-cron"; //scheduler
+import sgMail from "@sendgrid/mail";
 
 import cloudinary from "cloudinary";
 import { promises as fs } from "fs";
@@ -35,13 +37,21 @@ export const addBook = async (req, res) => {
 
 /** GET ALL BOOKS */
 export const getAllBooks = async (req, res) => {
-  /** @queryObj default search if search query doesn't exist */
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
   const { search, status } = req.query;
-
   const queryObj = {
     owner: req.user._id,
   };
 
+  const msg = {
+    to: "lesterabao@gmail.com", // Change to your recipient
+    from: "lesterabao@gmail.com", // Change to your verified sender
+    subject: "Sending with SendGrid is Fun",
+    text: "and easy to do anywhere, even with Node.js",
+    html: "<strong>and easy to do anywhere, even with Node.js</strong>",
+  };
+
+  /** @queryObj default search if search query doesn't exist */
   /** only if a search query is sent in the url */
   /** if search, use the query obj to search in the bookTitle or bookAuthor fields with options 'i' to ignore letter case */
   if (search) {
@@ -53,7 +63,6 @@ export const getAllBooks = async (req, res) => {
       // { status: { $regex: search, $options: "i" } },
     ];
   }
-
   /** Check for the status query in the url. Create a new property in the queryObj and give ii the value of the status query value */
   if (status) {
     queryObj.status = status;
@@ -62,6 +71,68 @@ export const getAllBooks = async (req, res) => {
   const allBooks = await BookModel.find(queryObj).populate("owner").sort({
     createdAt: -1,
   });
+
+  /** @dateChecker function to implement statuses for books depending on the dates*/
+  const dateChecker = async () => {
+    /** Implementing due dates */
+    /** @presentDate contains present date that we will be adding on */
+    /** @dueDate present date + 2 days */
+    /** @dueBooks finding all books that are about to be returned */
+    const presentDate = new Date();
+    const dueDate = new Date();
+    dueDate.setDate(presentDate.getDate() + 2); //sets the new value of dueDate to be 2 days before the present date.
+
+    const dueBooks = await BookModel.find({
+      owner: req.user._id,
+      //look for books that dateToReturn is greater than the presentDate and less than/equal to dueDate(2 days before the )
+      dateToReturn: { $lt: dueDate, $gte: presentDate },
+    });
+
+    if (dueBooks) {
+      for (const allDueBooks of dueBooks) {
+        allDueBooks.status = "due soon";
+        await allDueBooks.save();
+        sgMail.send(msg).then(
+          () => {
+            // console.log("hello");
+          },
+          (error) => {
+            console.error(error);
+
+            if (error.response) {
+              console.error(error.response.body);
+            }
+          }
+        );
+      }
+    }
+
+    /** Implementing present date exceeding date to return*/
+    const expiredDates = await BookModel.find({
+      owner: req.user._id,
+      dateToReturn: { $lte: presentDate },
+    });
+
+    // console.log(expiredDates);
+
+    /** check as well books that status is not "returned" */
+    if (expiredDates) {
+      for (const allExpiredDates of expiredDates) {
+        if (allExpiredDates.status !== "returned") {
+          allExpiredDates.status = "did not return";
+          await allExpiredDates.save();
+        }
+      }
+    }
+  };
+
+  cron.schedule(" 0 0 * * * ", () => {
+    console.log("Running at midnight");
+    dateChecker();
+  });
+
+  dateChecker();
+
   if (!allBooks) {
     res.status(StatusCodes.OK).json({ message: "No books found" });
   }

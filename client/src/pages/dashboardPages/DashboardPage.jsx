@@ -54,6 +54,10 @@ function DashboardPage() {
     setActive(id);
     navigate("/dashboard/borrowedBooks?status=currently%20borrowed");
   };
+  const handleActiveDueSoon = (id) => {
+    setActive(id);
+    navigate("/dashboard/borrowedBooks?status=due%20soon");
+  };
   const handleActive = (id) => {
     setActive(id);
     navigate("/dashboard/borrowedBooks");
@@ -90,7 +94,7 @@ function DashboardPage() {
             <Chips
               title={"return soon"}
               idprop={3}
-              handleActive={handleActive}
+              handleActive={handleActiveDueSoon}
               active={active}
             />
             <Chips

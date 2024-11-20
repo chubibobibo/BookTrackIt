@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import ComponentLoading from "../components/ComponentLoading";
 
 function LazyComponentLoad({ children }) {
   const [isVisible, setIsVisible] = useState(false);
@@ -17,10 +18,18 @@ function LazyComponentLoad({ children }) {
     return () => {
       if (ref.current) {
         observer.unobserve(ref.current);
+        observer.disconnect();
       }
     };
   }, []);
 
-  return <div ref={ref}>{isVisible ? children : null}</div>;
+  // return <div ref={ref}>{isVisible ? children : null}</div>;
+  return isVisible ? (
+    <div>{children}</div>
+  ) : (
+    <div ref={ref}>
+      <ComponentLoading />
+    </div>
+  );
 }
 export default LazyComponentLoad;

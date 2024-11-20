@@ -59,7 +59,7 @@ function Navbar({ setInputSearchQuery }) {
         <ThemeProvider value={inputTheme}>
           <Form action='/dashboard/borrowedBooks'>
             <Input
-              label='Search a book'
+              label='Search book title or author'
               icon={<FaMagnifyingGlass color='white' />}
               color='white'
               type='search'
