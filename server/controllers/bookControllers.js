@@ -5,6 +5,8 @@ import { BookModel } from "../models/BookSchema.js";
 import cron from "node-cron"; //scheduler
 import sgMail from "@sendgrid/mail";
 
+import { notifMessage } from "../utils/notifMsg.js";
+
 import cloudinary from "cloudinary";
 import { promises as fs } from "fs";
 
@@ -43,14 +45,6 @@ export const getAllBooks = async (req, res) => {
     owner: req.user._id,
   };
 
-  const msg = {
-    to: "lesterabao@gmail.com", // Change to your recipient
-    from: "lesterabao@gmail.com", // Change to your verified sender
-    subject: "Sending with SendGrid is Fun",
-    text: "and easy to do anywhere, even with Node.js",
-    html: "<strong>and easy to do anywhere, even with Node.js</strong>",
-  };
-
   /** @queryObj default search if search query doesn't exist */
   /** only if a search query is sent in the url */
   /** if search, use the query obj to search in the bookTitle or bookAuthor fields with options 'i' to ignore letter case */
@@ -82,28 +76,34 @@ export const getAllBooks = async (req, res) => {
     const dueDate = new Date();
     dueDate.setDate(presentDate.getDate() + 2); //sets the new value of dueDate to be 2 days before the present date.
 
+    /** @dueBooks finds all books having presentDate 2 days before dateToReturn */
     const dueBooks = await BookModel.find({
       owner: req.user._id,
       //look for books that dateToReturn is greater than the presentDate and less than/equal to dueDate(2 days before the )
       dateToReturn: { $lt: dueDate, $gte: presentDate },
-    });
+    }).populate("owner");
 
     if (dueBooks) {
       for (const allDueBooks of dueBooks) {
-        allDueBooks.status = "due soon";
-        await allDueBooks.save();
-        sgMail.send(msg).then(
-          () => {
-            // console.log("hello");
-          },
-          (error) => {
-            console.error(error);
+        console.log(allDueBooks.owner);
+        const msg = notifMessage(allDueBooks.owner.email); //function that uses email of books with due soon status to send notifs
+        //checks if status is not "due soon" to prevent sending  of email every time dueBooks are found
+        if (allDueBooks.status !== "due soon") {
+          allDueBooks.status = "due soon";
+          await allDueBooks.save();
+          sgMail.send(msg).then(
+            () => {
+              console.log("hello");
+            },
+            (error) => {
+              console.error(error);
 
-            if (error.response) {
-              console.error(error.response.body);
+              if (error.response) {
+                console.error(error.response.body);
+              }
             }
-          }
-        );
+          );
+        }
       }
     }
 
