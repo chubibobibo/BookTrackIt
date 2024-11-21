@@ -32,12 +32,12 @@ app.use(express.static(path.resolve(__dirname, "./public"))); //serves public fo
 /** Database connection */
 main().catch((err) => console.log(err));
 async function main() {
-  await mongoose.connect(process.env.MONGO_DB);
+  await mongoose.connect(process.env.MONGO_ATLAS);
 }
 
 /** MONGO STORE FOR EXPRESS SESSIONS */
 const store = MongoStore.create({
-  mongoUrl: process.env.MONGO_DB,
+  mongoUrl: process.env.MONGO_ATLAS,
   secret: process.env.MONGO_SECRET,
   touchAfter: 24 * 60 * 60,
 });
