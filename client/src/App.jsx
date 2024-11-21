@@ -11,12 +11,14 @@ import {
   ErrorPage,
   DashboardPage,
   UpdateProfile,
+  BorrowedBooksPage,
 } from "./utils";
 
 import { action as loginAction } from "./pages/authPages/LoginUserPage";
 import { action as registerAction } from "./pages/authPages/RegisterUserPage";
 import { action as updateProfileAction } from "./pages/authPages/UpdateProfile";
 import { loader as getLoggedUserLoader } from "./pages/dashboardPages/DashboardPage";
+import { loader as getBorrowedBooksLoader } from "./pages/dashboardPages/BorrowedBooksPage";
 
 const router = createBrowserRouter([
   {
@@ -48,6 +50,11 @@ const router = createBrowserRouter([
               </ProtectRoutes>
             ),
             action: updateProfileAction,
+          },
+          {
+            path: "borrowedBooks",
+            element: <BorrowedBooksPage />,
+            loader: getBorrowedBooksLoader,
           },
         ],
       },

@@ -24,11 +24,11 @@ import { Form, redirect } from "react-router-dom";
 export const action = async ({ request }) => {
   const formData = await request.formData(); //obtain data from forms.
   const data = Object.fromEntries(formData); //converts data into objects
-  //   console.log(data);
+  // console.log(data);
   try {
     await axios.post("/api/auth/login", data);
     toast.success("user logged in");
-    return redirect("/dashboard");
+    return redirect("/dashboard/borrowedBooks");
   } catch (err) {
     console.log(err);
     if (err?.response?.data?.message) {

@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 dotenv.config();
 
 import authRoute from "./routes/authRoute.js";
+import bookRoute from "./routes/bookRoutes.js";
 
 /** IMPORTS FOR SESSION AND PASSPORT */
 import MongoStore from "connect-mongo";
@@ -12,10 +13,13 @@ import session from "express-session";
 import passport from "passport";
 import { UserModel } from "./models/UserSchema.js";
 
+import cloudinary from "cloudinary";
+
 const app = express();
 
 app.use(express.json()); // parses json data
 app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 
 /** Database connection */
 main().catch((err) => console.log(err));
@@ -63,8 +67,15 @@ app.use((req, res, next) => {
   next();
 });
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API,
+  api_secret: process.env.CLOUDINARY_SECRET,
+});
+
 /** Routes */
 app.use("/api/auth/", authRoute);
+app.use("/api/book/", bookRoute);
 
 /** middleware for not found errors and express errors */
 app.use("*", (req, res) => {
