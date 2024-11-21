@@ -21,6 +21,8 @@ import passport from "passport";
 import { UserModel } from "./models/UserSchema.js";
 
 import cloudinary from "cloudinary";
+import mongoSanitize from "express-mongo-sanitize";
+import helmet from "helmet";
 
 const app = express();
 
@@ -28,6 +30,26 @@ app.use(express.json()); // parses json data
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, "./public"))); //serves public folder that will contain the dist folder from client
+app.use(mongoSanitize());
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        "img-src": [
+          "'self'",
+          "data:",
+          "http://res.cloudinary.com",
+          "https://*.tile.openstreetmap.org",
+        ],
+
+        "script-src": ["'self'"],
+        "script-src-attr": ["'none'"],
+        "style-src": ["'self'", "https:", "'unsafe-inline'"],
+      },
+    },
+  })
+);
 
 /** Database connection */
 main().catch((err) => console.log(err));
