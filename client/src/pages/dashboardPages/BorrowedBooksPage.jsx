@@ -40,8 +40,8 @@ function BorrowedBooksPage() {
       ) : (
         allBooksData?.map((books, idx) => {
           return (
-            <LazyComponentLoad>
-              <div key={books._id} className='h-[21rem]'>
+            <LazyComponentLoad key={books._id}>
+              <div className='h-[21rem]'>
                 <BookCard bookData={books} idx={idx} />
               </div>
             </LazyComponentLoad>
