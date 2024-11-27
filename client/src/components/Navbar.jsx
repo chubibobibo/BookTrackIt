@@ -8,7 +8,7 @@ import { ThemeProvider } from "@material-tailwind/react";
 import { inputTheme } from "../utils/materialcomponentTheme/inputTheme.js";
 
 import axios from "axios";
-import { useNavigate, Link, Form } from "react-router-dom";
+import { useNavigate, Link, Form, useSubmit } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import React from "react";
@@ -21,8 +21,10 @@ import {
   Typography,
 } from "@material-tailwind/react";
 
-function Navbar({ setInputSearchQuery }) {
+function Navbar({ setInputSearchQuery, inputSearchQuery }) {
   const navigate = useNavigate();
+  const submit = useSubmit(); //
+  // console.log(inputSearchQuery);
 
   //** handling state to open and close modal */
   const [open, setOpen] = React.useState(false);
@@ -30,10 +32,13 @@ function Navbar({ setInputSearchQuery }) {
     setOpen(!open);
   };
 
+  /** @submit useSubmit allows to submit a form using interaction where the event handler is attached to */
+  /** e.currentTarget.form identifies specific element where the event handler is attached */
   const handleChange = (e) => {
     setInputSearchQuery((prev) => {
       return { ...prev, search: e.target.value };
     });
+    submit(e.currentTarget.form);
   };
 
   /** @userData contains data of user from the context @data */
@@ -66,6 +71,7 @@ function Navbar({ setInputSearchQuery }) {
               variant='outlined'
               name='search'
               onChange={handleChange}
+              defaultValue={inputSearchQuery.search}
             />
           </Form>
         </ThemeProvider>

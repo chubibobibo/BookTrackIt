@@ -46,6 +46,7 @@ function DashboardPage() {
   /** Created different clickHandlers that navigates to a url with specific queries */
   /** @handleActive function to change the state active to apply bg color */
   /** @id tracks the element */
+  /** @navigate navigate to a page with hard coded queries. */
   const handleActiveReturned = (id) => {
     setActive(id);
     navigate("/dashboard/borrowedBooks?status=returned");
@@ -67,7 +68,10 @@ function DashboardPage() {
     <main>
       <loggedUserContext.Provider value={userData}>
         <ProtectRoutes>
-          <Navbar setInputSearchQuery={setInputSearchQuery} />
+          <Navbar
+            setInputSearchQuery={setInputSearchQuery}
+            inputSearchQuery={inputSearchQuery}
+          />
           <section className='flex items-center justify-center md:w-5/12 md:justify-self-center md:m-7'>
             <Typography
               variant='h3'

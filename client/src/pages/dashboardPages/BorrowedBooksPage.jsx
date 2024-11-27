@@ -32,7 +32,6 @@ export const loader = async ({ request }) => {
 function BorrowedBooksPage() {
   const data = useLoaderData();
   const allBooksData = data?.data?.allBooks;
-  console.log();
 
   return (
     <section className='flex flex-col gap-8 2xl:grid 2xl:grid-cols-3 2xl:justify-center 2xl:px-6 md:m:0'>
