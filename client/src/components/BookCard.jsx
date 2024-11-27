@@ -17,7 +17,7 @@ function BookCard({ bookData, idx }) {
   const rdate = new Date(bookData.dateToReturn);
   const returnDate = rdate.toDateString();
 
-  console.log(bookData);
+  // console.log(bookData);
 
   /** @update instantiates the customHook */
   /** @handleUpdateClick event handler that implements the custom hook to update the status*/
@@ -67,7 +67,7 @@ function BookCard({ bookData, idx }) {
         </CardHeader>
         <CardBody className='p-0 pt-3 w-full pr-2 ml-3'>
           <section className='flex flex-col items-center mb-2 border-b-2 border-gray-300'>
-            <Typography className='uppercase text-sm font-bold text-gray-700'>
+            <Typography className='uppercase text-sm mt-2 font-bold text-gray-700 md:text-lg'>
               {bookData.bookTitle}
             </Typography>
           </section>

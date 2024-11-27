@@ -4,6 +4,13 @@ import cors from "cors";
 import mongoose from "mongoose";
 dotenv.config();
 
+/** deploying */
+import { dirname } from "path";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url)); //serves public folder
+
 import authRoute from "./routes/authRoute.js";
 import bookRoute from "./routes/bookRoutes.js";
 
@@ -14,22 +21,45 @@ import passport from "passport";
 import { UserModel } from "./models/UserSchema.js";
 
 import cloudinary from "cloudinary";
+import mongoSanitize from "express-mongo-sanitize";
+import helmet from "helmet";
 
 const app = express();
 
 app.use(express.json()); // parses json data
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.resolve(__dirname, "./public"))); //serves public folder that will contain the dist folder from client
+app.use(mongoSanitize());
+
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        "img-src": [
+          "'self'",
+          "data:",
+          "http://res.cloudinary.com",
+          "https://*.tile.openstreetmap.org",
+        ],
+
+        "script-src": ["'self'"],
+        "script-src-attr": ["'none'"],
+        "style-src": ["'self'", "https:", "'unsafe-inline'"],
+      },
+    },
+  })
+);
 
 /** Database connection */
 main().catch((err) => console.log(err));
 async function main() {
-  await mongoose.connect(process.env.MONGO_DB);
+  await mongoose.connect(process.env.MONGO_ATLAS);
 }
 
 /** MONGO STORE FOR EXPRESS SESSIONS */
 const store = MongoStore.create({
-  mongoUrl: process.env.MONGO_DB,
+  mongoUrl: process.env.MONGO_ATLAS,
   secret: process.env.MONGO_SECRET,
   touchAfter: 24 * 60 * 60,
 });
@@ -76,6 +106,11 @@ cloudinary.config({
 /** Routes */
 app.use("/api/auth/", authRoute);
 app.use("/api/book/", bookRoute);
+
+/** accessing index.html from client */
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./public", "index.html"));
+});
 
 /** middleware for not found errors and express errors */
 app.use("*", (req, res) => {
