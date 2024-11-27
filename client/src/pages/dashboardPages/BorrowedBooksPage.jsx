@@ -34,17 +34,17 @@ function BorrowedBooksPage() {
   const allBooksData = data?.data?.allBooks;
 
   return (
-    <section className='flex flex-col gap-3 2xl:grid 2xl:grid-cols-3 2xl:justify-center 2xl:px-6 md:m:0'>
+    <section className='flex flex-col gap-8 2xl:grid 2xl:grid-cols-3 2xl:justify-center 2xl:px-6 md:m:0'>
       {!allBooksData ? (
         <Typography>No Books yet 📖</Typography>
       ) : (
         allBooksData?.map((books, idx) => {
           return (
-            <div key={books._id} className='h-[21rem]'>
-              <LazyComponentLoad>
+            <LazyComponentLoad>
+              <div key={books._id} className='h-[21rem]'>
                 <BookCard bookData={books} idx={idx} />
-              </LazyComponentLoad>
-            </div>
+              </div>
+            </LazyComponentLoad>
           );
         })
       )}

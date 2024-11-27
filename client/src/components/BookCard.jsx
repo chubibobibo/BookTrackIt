@@ -17,7 +17,7 @@ function BookCard({ bookData, idx }) {
   const rdate = new Date(bookData.dateToReturn);
   const returnDate = rdate.toDateString();
 
-  // console.log(bookData);
+  console.log(bookData);
 
   /** @update instantiates the customHook */
   /** @handleUpdateClick event handler that implements the custom hook to update the status*/
