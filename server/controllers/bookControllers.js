@@ -77,6 +77,7 @@ export const getAllBooks = async (req, res) => {
     dueDate.setDate(presentDate.getDate() + 2); //sets the new value of dueDate to be 2 days before the present date.
 
     /** @dueBooks finds all books having presentDate 2 days before dateToReturn */
+    /** populate the owner property so that we can obtain the email of the owner */
     const dueBooks = await BookModel.find({
       owner: req.user._id,
       //look for books that dateToReturn is greater than the presentDate and less than/equal to dueDate(2 days before the )
@@ -85,7 +86,7 @@ export const getAllBooks = async (req, res) => {
 
     if (dueBooks) {
       for (const allDueBooks of dueBooks) {
-        console.log(allDueBooks.owner);
+        // console.log(allDueBooks.owner);
         const msg = notifMessage(allDueBooks.owner.email); //function that uses email of books with due soon status to send notifs
         //checks if status is not "due soon" to prevent sending  of email every time dueBooks are found
         if (allDueBooks.status !== "due soon") {
