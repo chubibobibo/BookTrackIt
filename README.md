@@ -1,5 +1,8 @@
 # Book Tracker
-Created an app based on my need to track books that I borrowed in our local library. This app sends notifications to my email 2 days before any book is due to be returned. Implemented lazy loading for efficient rendering of components and photos. 
+Created an app based on my need to track books that I borrowed in our local library. This app sends notifications to my email 2 days before any book is due to be returned. Implemented lazy loading for efficient rendering of components and photos.  
+
+# Screen captures 
+![index page](https://res.cloudinary.com/dw1q3coyf/image/upload/c_pad,w_250/v1733321753/Screenshot_20241128-101713_nvaupf.png) ![index page](https://res.cloudinary.com/dw1q3coyf/image/upload/c_pad,b_gen_fill,w_250/v1733322189/Screenshot_20241204-152051_akktjd.png) ![index page](https://res.cloudinary.com/dw1q3coyf/image/upload/c_pad,w_250/v1733322190/Screenshot_20241204-152108_pjfasx.png)
 
 ## Prerequisites
 * A machine that has nodeJs
